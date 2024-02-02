@@ -1,22 +1,22 @@
 # Application for sales reps to use to make a new quote, will generate an invoice number
 import PyPDF2
 import openpyxl
+from datetime import date
 
-# Create a new excel workbook
-workbook = openpyxl.Workbook()
+today = date.today()
+# Create a new Excel workbook
+workbook = openpyxl.load_workbook('blank quote.xlsx')
 
 # Select the active sheet
 sheet = workbook.active
 
-# Write data to the cells
-sheet['A1'] = "Hello"
-sheet['B1'] = "World!"
+sheet['G4'] = 'Quote: 22586'
+sheet['G6'] = f'Date: {today}'
 
-# Save the workbook to a file
-workbook.save('example_2346.xlsx')
+workbook.save('New_quote.xlsx')
 
 # Open up an existing workbook
-existing_workbook = openpyxl.load_workbook('example.xlsx')
+existing_workbook = openpyxl.load_workbook('New_quote.xlsx')
 
 # Select a sheet in the active workbook
 existing_sheet = existing_workbook.active
