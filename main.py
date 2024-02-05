@@ -1,7 +1,22 @@
 # Application for sales reps to use to make a new quote, will generate an invoice number
+import os
+
 import PyPDF2
 import openpyxl
 from datetime import date
+from Database.database_manager import DatabaseManager
+from dotenv import load_dotenv
+
+load_dotenv()
+
+db = DatabaseManager(
+    os.getenv("DB_NAME"),
+    os.getenv("DB_USER"),
+    os.getenv("DB_PASSWORD"),
+    os.getenv("DB_HOST"),
+    os.getenv("DB_PORT")
+)
+
 
 today = date.today()
 # Create a new Excel workbook

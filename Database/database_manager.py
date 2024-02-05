@@ -16,12 +16,13 @@ class DatabaseManager:
         self.create_tables()
 
     def create_tables(self):
+        print("creating tables")
         self.cursor.execute('''
                     CREATE TABLE IF NOT EXISTS users (
                         user_id SERIAL PRIMARY KEY,
                         username VARCHAR(255),
                         password TEXT,
-                        salt TEXT,
+                        salt TEXT
                     )
                 ''')
         self.cursor.execute('''
@@ -29,9 +30,11 @@ class DatabaseManager:
                         quote_id SERIAL PRIMARY KEY,
                         company_name VARCHAR(255),
                         company_address VARCHAR(255),
-                        date TIME STAMP DEFAULT CURRENT_TIMESTAMP
+                        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 ''')
+
+        self.connection.commit()
 
     def get_password(self, username):
         try:
