@@ -2,6 +2,7 @@
 import os
 
 import PyPDF2
+import subprocess
 import openpyxl
 from datetime import date
 from Database.database_manager import DatabaseManager
@@ -28,10 +29,13 @@ sheet = workbook.active
 sheet['G4'] = 'Quote: 22586'
 sheet['G6'] = f'Date: {today}'
 
-workbook.save('New_quote.xlsx')
+quote = sheet['G4'].value
+print(quote)
+
+workbook.save('quote.xlsx')
 
 # Open up an existing workbook
-existing_workbook = openpyxl.load_workbook('New_quote.xlsx')
+existing_workbook = openpyxl.load_workbook('quote.xlsx')
 
 # Select a sheet in the active workbook
 existing_sheet = existing_workbook.active

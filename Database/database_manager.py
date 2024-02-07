@@ -16,7 +16,6 @@ class DatabaseManager:
         self.create_tables()
 
     def create_tables(self):
-        print("creating tables")
         self.cursor.execute('''
                     CREATE TABLE IF NOT EXISTS users (
                         user_id SERIAL PRIMARY KEY,
@@ -58,6 +57,23 @@ class DatabaseManager:
                 return result
             else:
                 return None
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            return False
+
+    def create(self, username, hashed_pass, salt):  # creating a user
+        try:
+            self.cursor.exucute("SELECT username FROM users WHERE username = %s", (username,))
+            existing_username = self.cursor.fetchone()
+
+            if existing_username:
+                return False
+
+            db_pass = hashed_pass.decode('utf-8')
+            self.cursor.execute("INSERT INTO users (username, password, salt) VALUES (%s, %s, %s)",
+                                (username, db_pass, salt))
+            self.connection.commit()
+            return True
         except Exception as e:
             print(f"Error occurred: {e}")
             return False
