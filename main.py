@@ -1,50 +1,33 @@
-# Application for sales reps to use to make a new quote, will generate an invoice number
+import customtkinter as ctk
 import os
 
-import PyPDF2
-import subprocess
-import openpyxl
-from datetime import date
-from Database.database_manager import DatabaseManager
 from dotenv import load_dotenv
+
+# Database imports
+from Database.database_manager import DatabaseManager
+from Database.invoicing_db import InvoiceDatabase
+
+# GUI imports
+
+# Security Imports
+from Security.user_authentication import UserAuthentication
 
 load_dotenv()
 
-db = DatabaseManager(
-    os.getenv("DB_NAME"),
-    os.getenv("DB_USER"),
-    os.getenv("DB_PASSWORD"),
-    os.getenv("DB_HOST"),
-    os.getenv("DB_PORT")
-)
+db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
+db_host = os.getenv("DB_HOST")
+db_port = os.getenv("DB_PORT")
 
 
-today = date.today()
-# Create a new Excel workbook
-workbook = openpyxl.load_workbook('blank quote.xlsx')
+def main():
+    app = ctk.CTk()
+    db_manager = DatabaseManager(db_name, db_user, db_password, db_host, db_port)
+    user_auth = UserAuthentication(db_manager)
 
-# Select the active sheet
-sheet = workbook.active
+    app.mainloop()
 
-sheet['G4'] = 'Quote: 22586'
-sheet['G6'] = f'Date: {today}'
 
-quote = sheet['G4'].value
-print(quote)
-
-workbook.save('quote.xlsx')
-
-# Open up an existing workbook
-existing_workbook = openpyxl.load_workbook('quote.xlsx')
-
-# Select a sheet in the active workbook
-existing_sheet = existing_workbook.active
-
-# Read data from the cells
-value_a1 = existing_sheet['A1'].value
-value_b1 = existing_sheet['B1'].value
-
-print(f'Value in A1: {value_a1}')
-print(f'Value in B1: {value_b1}')
-
-# Application
+if __name__ == "__main__":
+    main()

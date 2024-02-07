@@ -19,3 +19,13 @@ class InvoiceDatabase:
 
         except Exception as e:
             print(f"Error: {e}")
+
+    def add_invoice_id(self, quote_id, company_name, company_address):
+        try:
+            query = "INSERT INTO quotes (quote_id, company_name, company_address) VALUES (%s, %s, %s)"
+            self.db_manager.cursor.execute(query, (quote_id, company_name, company_address))
+            self.db_manager.connection.commit()
+            return True
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            return False
