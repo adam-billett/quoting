@@ -136,4 +136,62 @@ class GUIManager:
 
     # Main Menu of the application
     def main_menu(self):
-        pass
+        self.main_frame = ctk.CTkToplevel(self.app)
+        self.main_frame.geometry("750x500")
+        self.main_frame.title("Quoting")
+        self.main_frame.protocol("WM_DELETE_WINDOW", self.on_close)
+
+        # entry for quote page
+        self.name_entry = ctk.CTkEntry(self.main_frame)
+        self.name_entry.pack(pady=8, padx=4)
+
+        # entry for customer name
+        self.customer_entry = ctk.CTkEntry(self.main_frame)
+        self.customer_entry.pack(pady=8, padx=4)
+
+        # Entry for street name
+        self.street_entry = ctk.CTkEntry(self.main_frame)
+        self.street_entry.pack(pady=8, padx=4)
+
+        # Entry for city, state, and zip
+        self.address = ctk.CTkEntry(self.main_frame)
+        self.address.pack(pady=8, padx=4)
+
+        # Entry for the box number
+        self.box_num = ctk.CTkEntry(self.main_frame)
+        self.box_num.pack(pady=8, padx=4)
+
+        # Entry for the style
+        self.style = ctk.CTkEntry(self.main_frame)
+        self.style.pack(pady=8, padx=4)
+
+        # Entry for the size
+        self.size = ctk.CTkEntry(self.main_frame)
+        self.size.pack(pady=8, padx=4)
+
+        # Entry for the material
+        self.material = ctk.CTkEntry(self.main_frame)
+        self.material.pack(pady=8, padx=4)
+
+        # Entry for the joint
+        self.joint = ctk.CTkEntry(self.main_frame)
+        self.joint.pack(pady=8, padx=4)
+
+        # Entry for printing
+        self.printing = ctk.CTkEntry(self.main_frame)
+        self.printing.pack(pady=8, padx=4)
+
+        # Entry for quantity
+        self.quantity = ctk.CTkEntry(self.main_frame)
+        self.quantity.pack(pady=8, padx=4)
+
+        # Entry for the price
+        self.price = ctk.CTkEntry(self.main_frame)
+        self.price.pack(pady=8, padx=4)
+
+        # buttons
+        # submit button
+        self.submit_btn = ctk.CTkButton()
+
+        # add another item / quote button
+        self.add_btn = ctk.CTkButton()

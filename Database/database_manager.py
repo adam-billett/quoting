@@ -30,6 +30,14 @@ class DatabaseManager:
                         company_rep VARCHAR(255),
                         company_name VARCHAR(255),
                         company_address VARCHAR(255),
+                        box_no VARCHAR(255),
+                        style VARCHAR(255),
+                        size VARCHAR(255),
+                        material VARCHAR(255),
+                        joint VARCHAR(255),
+                        printing VARCHAR(255),
+                        qty INT,
+                        price DECIMAL,
                         date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 ''')
