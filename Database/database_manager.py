@@ -27,6 +27,7 @@ class DatabaseManager:
         self.cursor.execute('''
                     CREATE TABLE IF NOT EXISTS quotes (
                         quote_id SERIAL PRIMARY KEY,
+                        company_rep VARCHAR(255),
                         company_name VARCHAR(255),
                         company_address VARCHAR(255),
                         date TIMESTAMP DEFAULT CURRENT_TIMESTAMP

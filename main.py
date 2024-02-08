@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 
 # Database imports
 from Database.database_manager import DatabaseManager
-from Database.invoicing_db import InvoiceDatabase
+from Database.quoting_db import QuoteDatabase
 
 # GUI imports
+from GUIs.gui_manager import GUIManager
 
 # Security Imports
 from Security.user_authentication import UserAuthentication
@@ -25,6 +26,7 @@ def main():
     app = ctk.CTk()
     db_manager = DatabaseManager(db_name, db_user, db_password, db_host, db_port)
     user_auth = UserAuthentication(db_manager)
+    quoting_manager = GUIManager(app, db_manager, user_auth)
 
     app.mainloop()
 
