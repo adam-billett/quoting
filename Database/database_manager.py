@@ -64,7 +64,7 @@ class DatabaseManager:
 
     def create(self, username, hashed_pass, salt):  # creating a user
         try:
-            self.cursor.exucute("SELECT username FROM users WHERE username = %s", (username,))
+            self.cursor.execute("SELECT username FROM users WHERE username = %s", (username,))
             existing_username = self.cursor.fetchone()
 
             if existing_username:
