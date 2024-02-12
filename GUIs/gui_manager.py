@@ -161,11 +161,15 @@ class GUIManager:
         ws = wb.active
 
         quote_id = QuoteDatabase.get_quote_id(self)
-
+        if quote_id is not None:
+            quote_id += 1
+        else:
+            quote_id = 1
         ws['h4'] = quote_id
         quote_id = ws['h4'].value
 
-        self.quote_db.add_quote_id(self, quote_id)
+        new_id = quote_id
+        self.quote_db.add_quote_id(self, new_id, company_name="placeholder")
 
         wb.save(r'C:\Users\adam\PycharmProjects\quoting\quotes\new quote.xlsx')
 

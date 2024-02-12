@@ -9,25 +9,39 @@ class QuoteDatabase:
     # Method to get the quote id
     def get_quote_id(self):
         try:
-            query = "SELECT quote_id FROM quotes WHERE company_name = %s"
-            self.db_manager.connection.execute(query)
-            result = self.db_manager.cursor.fetchone()
+            query = "SELECT quote_id FROM quotes ORDER BY date DESC LIMIT 1"
+            cursor = self.db_manager.connection.cursor()
+            cursor.execute(query)
+            result = cursor.fetchone()
+            print(result)
 
             if result:
-                return True
+                return result[0]
             else:
                 return None
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Get quote id fail: {e}")
 
     # method to add the quote
-    def add_quote_id(self, quote_id):
+    def add_quote_id(self, quote_id, company_name):
         try:
-            query = "INSERT INTO quotes (quote_id) VALUES (%s)"
-            self.db_manager.cursor.execute(query, (quote_id,))
+            query = "INSERT INTO quotes (quote_id, company_name) VALUES (%s, %s)"
+            self.db_manager.cursor.execute(query, (quote_id, company_name))
             self.db_manager.connection.commit()
             return True
         except Exception as e:
             print(f"Error occurred: {e}")
             return False
+
+    def get_company_name(self):
+        try:
+            query = "SELECT company_name FROM quotes"
+            result = self.db_manager.connection.execute(query).fetchone()
+
+            if result:
+                return result[0]
+            else:
+                return None
+        except Exception as e:
+            print(f'Error: {e}')
