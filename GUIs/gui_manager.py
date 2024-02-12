@@ -1,7 +1,13 @@
+import os
+
 import customtkinter as ctk
 import sys
 import tkinter as tk
 from tkinter import messagebox
+from openpyxl import Workbook, load_workbook
+from Database.database_manager import DatabaseManager
+from Database.quoting_db import QuoteDatabase
+
 
 # import other GUIs
 
@@ -11,6 +17,7 @@ class GUIManager:
         self.app = app
         self.db_manager = db_manager
         self.user_authentication = user_authentication
+        self.quote_db = QuoteDatabase
 
         # create frames
         self.login_frame = None
@@ -18,20 +25,20 @@ class GUIManager:
         self.create_login_ui()
 
     # All the hiding and closing frame methods
-    def hide_create_user_ui(self): # hide the create a user frame
+    def hide_create_user_ui(self):  # hide the create a user frame
         if self.create_user_frame:
             self.create_user_frame.destroy()
         self.create_login_ui()
 
-    def hide_login_ui(self): # Hiding the login frame
+    def hide_login_ui(self):  # Hiding the login frame
         if self.login_frame:
             self.login_frame.destroy()
         self.app.deiconify()
 
-    def on_close(self): # Closing the root from any window
+    def on_close(self):  # Closing the root from any window
         quit()
 
-    def toggle_password(self): # toggle button to make the password hidden or unhidden
+    def toggle_password(self):  # toggle button to make the password hidden or unhidden
         self.show_password = not self.show_password
         if self.show_password:
             self.password_entry.config(show="")
@@ -54,7 +61,7 @@ class GUIManager:
         self.username_entry.pack(pady=8, padx=4)
 
         # Entry box for the password
-        self.password = ctk.CTkEntry(self.login_frame, placeholder_text="Password")
+        self.password = ctk.CTkEntry(self.login_frame, placeholder_text="Password", show="*")
         self.password.pack(pady=8, padx=4)
 
         # login button to confirm login in
@@ -141,57 +148,29 @@ class GUIManager:
         self.main_frame.title("Quoting")
         self.main_frame.protocol("WM_DELETE_WINDOW", self.on_close)
 
-        # entry for quote page
-        self.name_entry = ctk.CTkEntry(self.main_frame)
-        self.name_entry.pack(pady=8, padx=4)
+        # Create a new quote button
+        self.create_quote = ctk.CTkButton(self.main_frame, command=self.on_click, text="Create Quote")
+        self.create_quote.pack(pady=8, padx=4)
 
-        # entry for customer name
-        self.customer_entry = ctk.CTkEntry(self.main_frame)
-        self.customer_entry.pack(pady=8, padx=4)
+    def open_and_save(self):
+        try:
+            wb = load_workbook(r"C:\Users\adam\PycharmProjects\quoting\quotes\blank quote.xlsx")
+        except FileNotFoundError:
+            wb = Workbook()
 
-        # Entry for street name
-        self.street_entry = ctk.CTkEntry(self.main_frame)
-        self.street_entry.pack(pady=8, padx=4)
+        ws = wb.active
 
-        # Entry for city, state, and zip
-        self.address = ctk.CTkEntry(self.main_frame)
-        self.address.pack(pady=8, padx=4)
+        quote_id = QuoteDatabase.get_quote_id(self)
 
-        # Entry for the box number
-        self.box_num = ctk.CTkEntry(self.main_frame)
-        self.box_num.pack(pady=8, padx=4)
+        ws['h4'] = quote_id
+        quote_id = ws['h4'].value
 
-        # Entry for the style
-        self.style = ctk.CTkEntry(self.main_frame)
-        self.style.pack(pady=8, padx=4)
+        self.quote_db.add_quote_id(self, quote_id)
 
-        # Entry for the size
-        self.size = ctk.CTkEntry(self.main_frame)
-        self.size.pack(pady=8, padx=4)
+        wb.save(r'C:\Users\adam\PycharmProjects\quoting\quotes\new quote.xlsx')
 
-        # Entry for the material
-        self.material = ctk.CTkEntry(self.main_frame)
-        self.material.pack(pady=8, padx=4)
+    def on_click(self):
+        self.open_and_save()
 
-        # Entry for the joint
-        self.joint = ctk.CTkEntry(self.main_frame)
-        self.joint.pack(pady=8, padx=4)
+        os.startfile(r"C:\Users\adam\PycharmProjects\quoting\quotes\new quote.xlsx")
 
-        # Entry for printing
-        self.printing = ctk.CTkEntry(self.main_frame)
-        self.printing.pack(pady=8, padx=4)
-
-        # Entry for quantity
-        self.quantity = ctk.CTkEntry(self.main_frame)
-        self.quantity.pack(pady=8, padx=4)
-
-        # Entry for the price
-        self.price = ctk.CTkEntry(self.main_frame)
-        self.price.pack(pady=8, padx=4)
-
-        # buttons
-        # submit button
-        self.submit_btn = ctk.CTkButton()
-
-        # add another item / quote button
-        self.add_btn = ctk.CTkButton()

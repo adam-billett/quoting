@@ -7,10 +7,10 @@ class QuoteDatabase:
         self.db_manager = db_manager
 
     # Method to get the quote id
-    def get_quote_id(self, company_name):
+    def get_quote_id(self):
         try:
             query = "SELECT quote_id FROM quotes WHERE company_name = %s"
-            self.db_manager.connection.execute(query, company_name)
+            self.db_manager.connection.execute(query)
             result = self.db_manager.cursor.fetchone()
 
             if result:
@@ -22,10 +22,10 @@ class QuoteDatabase:
             print(f"Error: {e}")
 
     # method to add the quote
-    def add_quote(self, quote_id, company_rep, company_name, company_address):
+    def add_quote_id(self, quote_id):
         try:
-            query = "INSERT INTO quotes (quote_id, company_rep, company_name, company_address) VALUES (%s, %s, %s)"
-            self.db_manager.cursor.execute(query, (quote_id, company_rep, company_name, company_address))
+            query = "INSERT INTO quotes (quote_id) VALUES (%s)"
+            self.db_manager.cursor.execute(query, (quote_id,))
             self.db_manager.connection.commit()
             return True
         except Exception as e:

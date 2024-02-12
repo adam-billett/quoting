@@ -27,17 +27,7 @@ class DatabaseManager:
         self.cursor.execute('''
                     CREATE TABLE IF NOT EXISTS quotes (
                         quote_id SERIAL PRIMARY KEY,
-                        company_rep VARCHAR(255),
                         company_name VARCHAR(255),
-                        company_address VARCHAR(255),
-                        box_no VARCHAR(255),
-                        style VARCHAR(255),
-                        size VARCHAR(255),
-                        material VARCHAR(255),
-                        joint VARCHAR(255),
-                        printing VARCHAR(255),
-                        qty INT,
-                        price DECIMAL,
                         date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 ''')
@@ -46,7 +36,7 @@ class DatabaseManager:
 
     def get_password(self, username):
         try:
-            self.cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+            self.cursor.execute("SELECT password FROM users WHERE username = %s", (username,))
             result = self.cursor.fetchone()
 
             if result:
@@ -59,7 +49,7 @@ class DatabaseManager:
     # Get salt from the db
     def get_salt(self, username):
         try:
-            self.cursor.execute("SELECT salt FROM users WHERE username = ?", (username,))
+            self.cursor.execute("SELECT salt FROM users WHERE username = %s", (username,))
             result = self.cursor.fetchone()
 
             if result:
