@@ -26,12 +26,12 @@ class UserAuthentication:
             else:
                 return False
 
-    def create(self, username, password, confirm):
+    def create(self, username, first_name, last_name, password, confirm):
         if not username or not password or not confirm:
             return False
         elif password != confirm:
             return False
         else:
             hashed_pass = bcrypt.hashpw(password.encode('utf-8'), self.salt)
-            success = self.db_manager.create(username, hashed_pass, self.salt)
+            success = self.db_manager.create(username, first_name, last_name, hashed_pass, self.salt)
             return success

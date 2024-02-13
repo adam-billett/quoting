@@ -20,6 +20,8 @@ class DatabaseManager:
                     CREATE TABLE IF NOT EXISTS users (
                         user_id SERIAL PRIMARY KEY,
                         username VARCHAR(255),
+                        first_name VARCHAR(255),
+                        last_name VARCHAR(255),
                         password TEXT,
                         salt TEXT
                     )
@@ -60,7 +62,7 @@ class DatabaseManager:
             print(f"Error occurred: {e}")
             return False
 
-    def create(self, username, hashed_pass, salt):  # creating a user
+    def create(self, username, first_name, last_name, hashed_pass, salt):  # creating a user
         try:
             self.cursor.execute("SELECT username FROM users WHERE username = %s", (username,))
             existing_username = self.cursor.fetchone()
@@ -69,10 +71,26 @@ class DatabaseManager:
                 return False
 
             db_pass = hashed_pass.decode('utf-8')
-            self.cursor.execute("INSERT INTO users (username, password, salt) VALUES (%s, %s, %s)",
-                                (username, db_pass, salt))
+            self.cursor.execute(
+                "INSERT INTO users (username, first_name, last_name, password, salt) VALUES (%s, %s, %s, %s, %s)",
+                (username, first_name, last_name, db_pass, salt))
             self.connection.commit()
             return True
         except Exception as e:
             print(f"Error occurred: {e}")
+            return False
+
+    # Get the first and last name of the current user
+    def get_curr_user(self, username):
+        pass
+        try:
+            self.cursor.execute("SELECT first_name, last_name FROM users WHERE username = %s", (username,))
+            result = self.cursor.fetchall()
+
+            if result:
+                return result[0]
+            else:
+                return None
+        except Exception as e:
+            print(f"Usernames Error: {e}")
             return False

@@ -103,11 +103,19 @@ class GUIManager:
             self.create_user_frame = ctk.CTkToplevel(self.create_user_frame)
             self.create_user_frame.protocol("WM_DELETE_WINDOW", self.on_close)
             self.create_user_frame.title("Create User")
-            self.create_user_frame.geometry("275x215")
+            self.create_user_frame.geometry("300x275")
 
             # Entry box for new username
             self.create_user_entry = ctk.CTkEntry(self.create_user_frame, placeholder_text="Username")
             self.create_user_entry.pack(pady=8, padx=4)
+
+            # First name entry
+            self.first_name = ctk.CTkEntry(self.create_user_frame, placeholder_text="First Name")
+            self.first_name.pack(pady=8, padx=4)
+
+            # Last name entry
+            self.last_name = ctk.CTkEntry(self.create_user_frame, placeholder_text="Last Name")
+            self.last_name.pack(pady=8, padx=4)
 
             # Entry box for new user password
             self.password_entry = ctk.CTkEntry(self.create_user_frame, placeholder_text="Password", show="*")
@@ -121,6 +129,8 @@ class GUIManager:
             # Submit button to enter the new user
             self.create_button = ctk.CTkButton(self.create_user_frame, text="Create",
                                                command=lambda: self.create(self.create_user_entry.get(),
+                                                                           self.first_name.get(),
+                                                                           self.last_name.get(),
                                                                            self.password_entry.get(),
                                                                            self.password_confirm.get()))
             self.create_button.pack(pady=8, padx=4)
@@ -134,8 +144,8 @@ class GUIManager:
             # hides login frame when using create user page
 
     # Create
-    def create(self, username, password, confirm):
-        if self.user_authentication.create(username, password, confirm):
+    def create(self, username, first_name, last_name, password, confirm):
+        if self.user_authentication.create(username, first_name, last_name, password, confirm):
             messagebox.showinfo("Success", "account created successfully")
             self.hide_create_user_ui()
         else:
@@ -148,14 +158,16 @@ class GUIManager:
         self.main_frame.title("Quoting")
         self.main_frame.protocol("WM_DELETE_WINDOW", self.on_close)
 
-        # Create a new quote button
-        self.create_quote = ctk.CTkButton(self.main_frame, command=self.on_click, text="Create Quote")
-        self.create_quote.pack(pady=8, padx=4)
-
+        # Displaying the current user
         self.curr_user = ctk.CTkLabel(self.main_frame, text=self.username_entry.get())
         self.curr_user.pack(pady=8, padx=4)
 
-    def open_and_save(self):
+        # Create a new quote button
+        self.create_quote = ctk.CTkButton(self.main_frame, command=self.on_click(self.curr_user), text="Create Quote")
+        self.create_quote.pack(pady=8, padx=4)
+
+    # Open and save the excel sheet to insert in the quote number
+    def open_and_save(self, curr_user):
         try:
             wb = load_workbook(r"C:\Users\adam\PycharmProjects\quoting\quotes\blank quote.xlsx")
         except FileNotFoundError:
@@ -169,6 +181,9 @@ class GUIManager:
         else:
             quote_id = 1
         ws['h4'] = quote_id
+        ws['h12'] = self.username_entry.get()
+        ws['a48'] = self.username_entry.get()
+
         quote_id = ws['h4'].value
 
         new_id = quote_id
@@ -176,8 +191,9 @@ class GUIManager:
 
         wb.save(r'C:\Users\adam\PycharmProjects\quoting\quotes\new quote.xlsx')
 
-    def on_click(self):
-        self.open_and_save()
+    def on_click(self, curr_user):
+        # calls open and save to insert invoice number
+        self.open_and_save(curr_user)
 
+        # opens the excel file for the user to edit around in
         os.startfile(r"C:\Users\adam\PycharmProjects\quoting\quotes\new quote.xlsx")
-
