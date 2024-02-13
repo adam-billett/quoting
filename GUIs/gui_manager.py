@@ -152,6 +152,9 @@ class GUIManager:
         self.create_quote = ctk.CTkButton(self.main_frame, command=self.on_click, text="Create Quote")
         self.create_quote.pack(pady=8, padx=4)
 
+        self.curr_user = ctk.CTkLabel(self.main_frame, text=self.username_entry.get())
+        self.curr_user.pack(pady=8, padx=4)
+
     def open_and_save(self):
         try:
             wb = load_workbook(r"C:\Users\adam\PycharmProjects\quoting\quotes\blank quote.xlsx")

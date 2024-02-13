@@ -16,6 +16,7 @@ class UserAuthentication:
             if stored_password:
                 try:
                     if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
+                        self.current_user = username
                         return True
                     else:
                         return False
