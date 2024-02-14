@@ -8,6 +8,8 @@ from openpyxl import Workbook, load_workbook
 from Database.database_manager import DatabaseManager
 from Database.quoting_db import QuoteDatabase
 
+from GUIs.quote_gui import Quotegui
+
 
 # import other GUIs
 
@@ -18,6 +20,7 @@ class GUIManager:
         self.db_manager = db_manager
         self.user_authentication = user_authentication
         self.quote_db = QuoteDatabase
+        self.quote_gui = Quotegui(self.app, self.db_manager, self)
 
         # create frames
         self.login_frame = None
@@ -85,7 +88,7 @@ class GUIManager:
     # Login
     def handle_login(self, username, password):
         if self.user_authentication.login(username, password):
-            # Login sucessful
+            # Login successful
             messagebox.showinfo("Success", "Welcome to MVPS quoting")
             self.main_menu()
         else:
@@ -163,10 +166,16 @@ class GUIManager:
         self.curr_user.pack(pady=8, padx=4)
 
         # Create a new quote button
-        self.create_quote = ctk.CTkButton(self.main_frame, command=self.on_click(self.curr_user), text="Create Quote")
+        self.create_quote = ctk.CTkButton(self.main_frame, command=lambda: self.on_click(self.curr_user),
+                                          text="Create Quote")
         self.create_quote.pack(pady=8, padx=4)
 
-    # Open and save the excel sheet to insert in the quote number
+        # Search for a quote button
+        self.search_quote = ctk.CTkButton(self.main_frame, command=self.quote_gui.display_all_quotes,
+                                          text="Search")
+        self.search_quote.pack(pady=8, padx=4)
+
+    # Open and save the Excel sheet to insert in the quote number
     def open_and_save(self, curr_user):
         try:
             wb = load_workbook(r"C:\Users\adam\PycharmProjects\quoting\quotes\blank quote.xlsx")
@@ -182,7 +191,6 @@ class GUIManager:
             quote_id = 1
         ws['h4'] = quote_id
         ws['h12'] = self.username_entry.get()
-        ws['a48'] = self.username_entry.get()
 
         quote_id = ws['h4'].value
 
@@ -195,5 +203,5 @@ class GUIManager:
         # calls open and save to insert invoice number
         self.open_and_save(curr_user)
 
-        # opens the excel file for the user to edit around in
+        # opens the Excel file for the user to edit around in
         os.startfile(r"C:\Users\adam\PycharmProjects\quoting\quotes\new quote.xlsx")

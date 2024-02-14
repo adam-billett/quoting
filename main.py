@@ -9,6 +9,7 @@ from Database.quoting_db import QuoteDatabase
 
 # GUI imports
 from GUIs.gui_manager import GUIManager
+from GUIs.quote_gui import Quotegui
 
 # Security Imports
 from Security.user_authentication import UserAuthentication
@@ -26,6 +27,7 @@ def main():
     app = ctk.CTk()
     db_manager = DatabaseManager(db_name, db_user, db_password, db_host, db_port)
     user_auth = UserAuthentication(db_manager)
+    quote_gui = Quotegui
     quoting_manager = GUIManager(app, db_manager, user_auth)
 
     app.mainloop()

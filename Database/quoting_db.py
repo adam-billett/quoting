@@ -3,7 +3,7 @@ import psycopg2
 
 
 class QuoteDatabase:
-    def __int__(self, db_manager):
+    def __init__(self, db_manager):
         self.db_manager = db_manager
 
     # Method to get the quote id
@@ -45,3 +45,13 @@ class QuoteDatabase:
                 return None
         except Exception as e:
             print(f'Error: {e}')
+
+    def get_quotes(self):
+        try:
+            query = "SELECT company, date FROM quotes"
+            self.db_manager.connection.execute(query)
+            quotes = self.db_manager.fetchall()
+            return quotes
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            return False
