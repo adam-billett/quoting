@@ -39,7 +39,7 @@ class GUIManager:
         self.app.deiconify()
 
     def on_close(self):  # Closing the root from any window
-        quit()
+        self.app.destroy()
 
     def toggle_password(self):  # toggle button to make the password hidden or unhidden
         self.show_password = not self.show_password

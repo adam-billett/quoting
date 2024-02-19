@@ -4,3 +4,8 @@
 New_quote.xlsx
 quotes/blank quote.xlsx
 quotes
+
+build
+dist
+main.spec
+/main.spec
