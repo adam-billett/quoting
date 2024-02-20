@@ -32,7 +32,8 @@ class Quotegui:
         self.date_entry = ctk.CTkEntry(self.create_search_frame, placeholder_text="Date")
         self.date_entry.pack(pady=8, padx=4)
 
-        self.search_btn = ctk.CTkButton(self.create_search_frame, command=lambda: self.search_quote)
+        self.search_btn = ctk.CTkButton(self.create_search_frame, command=lambda: self.search_quote,
+                                        text="Search")
         self.search_btn.pack(pady=8, padx=4)
 
         self.quote_lbl = ctk.CTkLabel(self.create_search_frame)
@@ -40,7 +41,7 @@ class Quotegui:
 
     def search_quote(self):
         if self.id_entry.get():
-            self.display_quote()
+            self.display_quote(self.id_entry.get())
         elif self.company_entry.get():
             self.display_quote()
         elif self.date_entry.get():
@@ -48,14 +49,20 @@ class Quotegui:
         else:
             self.display_all_quotes()
 
-    def display_quote(self):
-        pass
+    def display_quote(self, quote_id):
+        quote = self.quoting_db.get_quote(quote_id)
+
+        for company, date in quote:
+            quote_txt = (company, date)
+
+        self.quote_lbl.configure(text=quote_txt)
+        self.quote_txt = quote_txt
 
     def display_all_quotes(self):
         quotes = self.quoting_db.get_quotes()
 
         for company, date in quotes:
-            inv_txt = (company, date)
+            quote_txt = (company, date)
 
-        self.quote_lbl.configure(text=inv_txt)
-        self.inv_txt = inv_txt
+        self.quote_lbl.configure(text=quote_txt)
+        self.quote_txt = quote_txt

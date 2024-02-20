@@ -171,7 +171,7 @@ class GUIManager:
         self.create_quote.pack(pady=8, padx=4)
 
         # Search for a quote button
-        self.search_quote = ctk.CTkButton(self.main_frame, command=self.quote_gui.display_all_quotes,
+        self.search_quote = ctk.CTkButton(self.main_frame, command=self.quote_gui.search_menu,
                                           text="Search")
         self.search_quote.pack(pady=8, padx=4)
 

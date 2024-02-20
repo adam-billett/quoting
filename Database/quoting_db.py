@@ -55,3 +55,13 @@ class QuoteDatabase:
         except Exception as e:
             print(f"Error occurred: {e}")
             return False
+
+    def get_quote(self, quote_id):
+        try:
+            query = "SELECT company, date FROM quotes WHERE quote_id = %s"
+            self.db_manager.connection.execute(query, quote_id)
+            quote = self.db_manager.fetchone()
+            return quote
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            return False
